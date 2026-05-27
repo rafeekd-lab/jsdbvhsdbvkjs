@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secure Access - Payload</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet">
 <style>
     * {
         margin: 0;
@@ -26,6 +26,28 @@
         z-index: -1;
     }
 
+    /* Dedicated Overlay FX Canvas for the Fire Heart & Particle Explosion */
+    #fxCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 3;
+        pointer-events: none;
+    }
+
+    /* Rose Petal Canvas Layer */
+    #petalCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        pointer-events: none;
+    }
+
     .container {
         width: 100%;
         min-height: 100vh;
@@ -34,6 +56,8 @@
         align-items: center;
         flex-direction: column;
         padding: 20px;
+        position: relative;
+        z-index: 2;
     }
 
     /* --- HACKER SCREEN --- */
@@ -93,10 +117,6 @@
         display: flex;
         justify-content: space-between;
         font-size: 14px;
-    }
-    
-    .log-line.green-text {
-        color: #00ff66;
     }
 
     .log-indent {
@@ -189,10 +209,6 @@
 
     @keyframes hackLoad {
         0% { width: 0%; }
-        20% { width: 30%; }
-        40% { width: 45%; }
-        60% { width: 72%; }
-        80% { width: 85%; }
         100% { width: 100%; }
     }
 
@@ -234,13 +250,18 @@
 
     .neon-container {
         position: relative;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 360px;
+        justify-content: center;
     }
 
     .crown {
         position: absolute;
         top: -40px;
-        right: -10px;
+        right: -30px;
         width: 60px;
         height: auto;
         filter: drop-shadow(0 0 8px #ff4da6);
@@ -252,37 +273,79 @@
         filter: drop-shadow(0 0 8px #ff4da6);
         opacity: 0.8;
     }
-    .h-left-1 { top: 20px; left: -50px; width: 40px; }
-    .h-left-2 { top: 80px; left: -80px; width: 25px; transform: rotate(-15deg); }
-    .h-right-1 { top: 40px; right: -60px; width: 35px; }
+    .h-left-1 { top: 40px; left: -70px; width: 40px; }
+    .h-left-2 { top: 160px; left: -100px; width: 25px; transform: rotate(-15deg); }
+    .h-right-1 { top: 60px; right: -80px; width: 35px; }
     .h-bottom { bottom: -60px; left: 50%; transform: translateX(-50%); width: 50px; }
 
+    /* HAPPY Birthday Layout Styling */
     .happy-text {
         font-family: 'Montserrat', sans-serif;
         font-size: 60px;
         letter-spacing: 5px;
         font-weight: 700;
+        color: #fff;
         text-shadow: 0 0 10px #fff, 0 0 20px #ff4da6, 0 0 40px #ff4da6;
-        margin-bottom: -15px;
+        margin-bottom: 5px;
         position: relative;
         z-index: 2;
     }
 
     .birthday-text {
         font-family: 'Dancing Script', cursive;
-        font-size: 110px;
+        font-size: 100px;
         color: #fff;
         text-shadow: 
             0 0 5px #fff,
             0 0 10px #fff,
             0 0 20px #ff0055,
             0 0 40px #ff0055,
-            0 0 80px #ff0055,
-            0 0 100px #ff0055;
+            0 0 80px #ff0055;
         line-height: 1;
         position: relative;
         z-index: 1;
-        transform: rotate(-3deg);
+        margin-bottom: 10px;
+    }
+
+    /* --- THE NEW STYLIZED NAME ENTRY --- */
+    .name-text-container {
+        position: relative;
+        padding: 5px 20px;
+        margin-top: 5px;
+    }
+
+    .name-text {
+        font-family: 'Dancing Script', cursive; /* Beautiful Elegant New Font Style */
+        font-size: 115px; /* Large cinematic size */
+        font-weight: 700;
+        color: #ffffff;
+        position: relative;
+        display: inline-block;
+        opacity: 0;
+        transform: rotate(-2deg);
+        /* Spawns smoothly right as the fire heart pieces explode away */
+        animation: stylizedReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.6s forwards;
+    }
+
+    @keyframes stylizedReveal {
+        0% {
+            opacity: 0;
+            transform: scale(0.6) rotate(5deg);
+            filter: blur(10px);
+            text-shadow: 0 0 10px #ff0055;
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(-2deg);
+            filter: blur(0px);
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #ff0055,
+                0 0 60px #ff0055,
+                0 0 90px #ff0055,
+                0 0 120px #9d00ff; /* Multi-layered rich pink/violet premium aesthetic */
+        }
     }
 
     .msg-top {
@@ -304,7 +367,6 @@
         margin-top: 20px;
     }
 
-    /* SVG Styles */
     .pink-stroke { stroke: #ff4da6; stroke-width: 2; fill: none; }
 </style>
 </head>
@@ -312,9 +374,12 @@
 
 <canvas id="matrix"></canvas>
 
+<canvas id="petalCanvas"></canvas>
+
+<canvas id="fxCanvas"></canvas>
+
 <div class="container">
 
-    <!-- HACK SCREEN -->
     <div id="hackScreen">
         <div class="status-top">SECURE CONNECTION ESTABLISHED...</div>
         
@@ -383,7 +448,6 @@
         </div>
     </div>
 
-    <!-- BIRTHDAY SCREEN -->
     <div id="birthdayScreen" class="hidden">
         
         <div class="access-granted">
@@ -391,8 +455,7 @@
             ACCESS GRANTED
         </div>
 
-        <div class="neon-container">
-            <!-- Decorative SVGs acting as Neon signs -->
+        <div class="neon-container" id="neonContainer">
             <svg class="crown" viewBox="0 0 100 100">
                 <path class="pink-stroke" d="M10,50 L30,80 L50,40 L70,80 L90,50 L80,90 L20,90 Z" />
                 <circle cx="10" cy="50" r="4" fill="#ff4da6"/>
@@ -411,7 +474,11 @@
             </svg>
 
             <div class="happy-text">HAPPY</div>
-	
+            <div class="birthday-text">Birthday</div>
+
+            <div class="name-text-container" id="nameContainerNode">
+                <div class="name-text" id="stormName">Hera</div>
+            </div>
             
             <svg class="heart-icon h-bottom" viewBox="0 0 100 100">
                 <path class="pink-stroke" d="M50,85 C20,55 10,40 10,25 C10,10 30,5 50,25 C70,5 90,10 90,25 C90,40 80,55 50,85 Z" />
@@ -431,7 +498,7 @@
 </div>
 
 <script>
-// MATRIX EFFECT
+// --- MATRIX BACKGROUND EFFECT ---
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -447,7 +514,7 @@ for(let x = 0; x < columns; x++) {
     drops[x] = 1;
 }
 
-let matrixColor = "#005522"; // Start with dark green
+let matrixColor = "#005522";
 
 function draw() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
@@ -466,10 +533,10 @@ function draw() {
         drops[i]++;
     }
 }
-
 setInterval(draw, 40);
 
-// PROGRESS BAR COUNTER LOGIC
+
+// --- PROGRESS BAR LOGIC ---
 const percentCounter = document.getElementById('percentCounter');
 let currentPercent = 0;
 const duration = 3500; 
@@ -485,19 +552,213 @@ const counterInterval = setInterval(() => {
     percentCounter.innerText = Math.floor(currentPercent) + "%";
 }, interval);
 
-// SWITCH SCREEN AFTER 3.5 SECONDS
+
+// --- ADVANCED FIRE HEART & SHRAPNEL EXPLOSION FX ENGINE ---
+const fxCanvas = document.getElementById("fxCanvas");
+const fctx = fxCanvas.getContext("2d");
+
+fxCanvas.width = window.innerWidth;
+fxCanvas.height = window.innerHeight;
+
+let particles = [];
+let fireHeartX = -100;
+let fireHeartY = window.innerHeight * 0.65; 
+let targetX = window.innerWidth / 2;
+let stage = 0; // 0: Flying In, 1: Exploding Shrapnel, 2: Finished (No permanent heart layout icon)
+
+function drawHeartShape(context, bx, by, size) {
+    context.beginPath();
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
+        let hx = 16 * Math.pow(Math.sin(angle), 3);
+        let hy = 13 * Math.cos(angle) - 5 * Math.cos(2*angle) - 2 * Math.cos(3*angle) - Math.cos(4*angle);
+        
+        let targetXPosition = bx + hx * (size / 15);
+        let targetYPosition = by - hy * (size / 15);
+        
+        if (angle === 0) {
+            context.moveTo(targetXPosition, targetYPosition);
+        } else {
+            context.lineTo(targetXPosition, targetYPosition);
+        }
+    }
+    context.closePath();
+}
+
+class FireParticle {
+    constructor(x, y, color, speedVectorX, speedVectorY, maxLife) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.vx = speedVectorX;
+        this.vy = speedVectorY;
+        this.life = maxLife;
+        this.maxLife = maxLife;
+        this.size = Math.random() * 4 + 2;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life--;
+    }
+    draw() {
+        let opacity = this.life / this.maxLife;
+        fctx.fillStyle = this.color;
+        fctx.globalAlpha = opacity;
+        fctx.beginPath();
+        fctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        fctx.fill();
+        fctx.globalAlpha = 1.0;
+    }
+}
+
+function runFXEngine() {
+    fctx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+    // STAGE 0: Blazing Fire Heart charges from Left to Right
+    if (stage === 0) {
+        fireHeartX += (targetX - fireHeartX) * 0.12;
+        
+        for (let i = 0; i < 8; i++) {
+            let angle = Math.random() * Math.PI * 2;
+            let radius = Math.random() * 20;
+            let px = fireHeartX + Math.cos(angle) * radius;
+            let py = fireHeartY + Math.sin(angle) * radius;
+            let colors = ['#ff3300', '#ff6600', '#ffaa00', '#ffcc00'];
+            particles.push(new FireParticle(px, py, colors[Math.floor(Math.random() * colors.length)], Math.random() * -4 - 2, Math.random() * 4 - 2, 25));
+        }
+
+        fctx.save();
+        fctx.shadowBlur = 30;
+        fctx.shadowColor = "#ff3300";
+        fctx.fillStyle = "#ff6600";
+        drawHeartShape(fctx, fireHeartX, fireHeartY, 40);
+        fctx.fill();
+        fctx.restore();
+
+        if (Math.abs(fireHeartX - targetX) < 5) {
+            stage = 1; 
+            // Explode particles aggressively to every single corner of the screen
+            for (let i = 0; i < 280; i++) {
+                let angle = Math.random() * Math.PI * 2;
+                let force = Math.random() * 24 + 6; 
+                let vx = Math.cos(angle) * force;
+                let vy = Math.sin(angle) * force;
+                let colors = ['#ff1a00', '#ff5500', '#ffaa00', '#ffffff', '#ff0055'];
+                particles.push(new FireParticle(targetX, fireHeartY, colors[Math.floor(Math.random() * colors.length)], vx, vy, Math.random() * 60 + 40));
+            }
+        }
+    }
+
+    // STAGE 1: Process and clear shrapnel particles completely (No heart regrowth occurs)
+    if (stage === 1) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw();
+            if (particles[i].life <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+        if (particles.length === 0) {
+            stage = 2; // End loop safely
+        }
+    }
+
+    requestAnimationFrame(runFXEngine);
+}
+
+
+// --- ROSE PETAL SHOWER ENGINE ---
+const petalCanvas = document.getElementById("petalCanvas");
+const pCtx = petalCanvas.getContext("2d");
+
+petalCanvas.width = window.innerWidth;
+petalCanvas.height = window.innerHeight;
+
+let petalsArray = [];
+let runPetals = false;
+
+class Petal {
+    constructor() {
+        this.x = Math.random() * petalCanvas.width;
+        this.y = Math.random() * -petalCanvas.height - 20;
+        this.size = Math.random() * 8 + 8;
+        this.speedY = Math.random() * 1.5 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.angle = Math.random() * 360;
+        this.spin = Math.random() * 2 - 1;
+        
+        const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#c9184a', '#ff0a54'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+    update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.angle += this.spin;
+        
+        if (this.y > petalCanvas.height) {
+            this.y = -20;
+            this.x = Math.random() * petalCanvas.width;
+        }
+    }
+    draw() {
+        pCtx.save();
+        pCtx.translate(this.x, this.y);
+        pCtx.rotate(this.angle * Math.PI / 180);
+        pCtx.fillStyle = this.color;
+        pCtx.beginPath();
+        pCtx.ellipse(0, 0, this.size, this.size / 1.5, 0, 0, 2 * Math.PI);
+        pCtx.fill();
+        pCtx.restore();
+    }
+}
+
+function initPetals() {
+    for (let i = 0; i < 75; i++) {
+        petalsArray.push(new Petal());
+    }
+}
+
+function animatePetals() {
+    if(!runPetals) return;
+    pCtx.clearRect(0, 0, petalCanvas.width, petalCanvas.height);
+    for (let i = 0; i < petalsArray.length; i++) {
+        petalsArray[i].update();
+        petalsArray[i].draw();
+    }
+    requestAnimationFrame(animatePetals);
+}
+
+
+// --- SWITCH SCREEN LOGIC INTERCEPT ---
 setTimeout(() => {
     document.getElementById("hackScreen").classList.add("hidden");
     document.getElementById("birthdayScreen").classList.remove("hidden");
     
-    // Change matrix rain color to deep pink to match the theme
+    // 1. Position target zone parameters relative to layout container bounding boxes
+    targetX = window.innerWidth / 2;
+    fireHeartY = document.getElementById("nameContainerNode").getBoundingClientRect().top + 55;
+
+    // 2. Fire the Cinematic Explosion engine sequence
+    runFXEngine();
+    
+    // 3. Transition matrix background stream color code
     matrixColor = "#4a0024";
+
+    // 4. Initiate full-screen Rose Petals Shower overlay
+    runPetals = true;
+    initPetals();
+    animatePetals();
 }, 3500);
 
-// Handle window resize for canvas
+// Window resizing adjustments
 window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
+    petalCanvas.width = window.innerWidth;
+    petalCanvas.height = window.innerHeight;
+    fxCanvas.width = window.innerWidth;
+    fxCanvas.height = window.innerHeight;
+    targetX = window.innerWidth / 2;
 });
 </script>
 
